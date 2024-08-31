@@ -18,7 +18,7 @@ test_data = datasets.FashionMNIST(
     transform=ToTensor()
 )
 
-print(type(training_data))
+# print(type(training_data))
 
 # 索引数据并可视化数据集（由matplotlib库实现）
 ## 建立数据索引表，对应标签数字和实际含义
@@ -34,12 +34,13 @@ labels_map = {
     8: "Bag",
     9: "Ankle Boot",
 }
+
 ## 构建画布
 figure = plt.figure(figsize=(8, 8))
 cols, rows = 3, 3
 for i in range(1, cols * rows + 1):
     sample_idx = torch.randint(len(training_data), size=(1,)).item()
-    print(training_data[sample_idx])
+    # print(training_data[sample_idx])
     img, label = training_data[sample_idx]
     figure.add_subplot(rows, cols, i)
     plt.title(labels_map[label])
@@ -54,14 +55,14 @@ test_dataloader = DataLoader(test_data, batch_size=64, shuffle=True)
 
 # Display image and label.
 train_features, train_labels = next(iter(train_dataloader))
-print(f"Feature batch shape: {train_features.size()}")
-print(f"Labels batch shape: {train_labels.size()}")
+# print(f"Feature batch shape: {train_features.size()}")
+# print(f"Labels batch shape: {train_labels.size()}")
 img = train_features[0].squeeze()
 label = train_labels[0]
 plt.imshow(img, cmap="gray")
 plt.show()
 label_name = list(labels_map.values())[label]
-print(f"Label: {label_name}")
+# print(f"Label: {label_name}")
 
 from torchvision import datasets
 from torchvision.transforms import ToTensor, Lambda
@@ -82,7 +83,7 @@ from torchvision import datasets, transforms
 
 # 输出信息
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-print('Using {} device'.format(device))
+# print('Using {} device'.format(device))
 
 # 定义神经网络
 class NeuralNetwork(nn.Module):
@@ -106,36 +107,36 @@ class NeuralNetwork(nn.Module):
 
 # 实例化神经网络，并指定设备
 model = NeuralNetwork().to(device)
-print(model)
+# print(model)
 
 # 测试，了解函数
 ## 了解模型如何使用并产出预测值
 X = torch.rand(1, 28, 28, device=device)
 logits = model(X)
-print(logits)
+# print(logits)
 pred_probab = nn.Softmax(dim=1)(logits)
-print(pred_probab)
+# print(pred_probab)
 y_pred = pred_probab.argmax(1)
-print(f"Predicted class: {y_pred}")
-print(f"First Linear weights: {model.linear_relu_stack[0].weight} \n")
-print(f"First Linear biases: {model.linear_relu_stack[0].bias} \n")
+# print(f"Predicted class: {y_pred}")
+# print(f"First Linear weights: {model.linear_relu_stack[0].weight} \n")
+# print(f"First Linear biases: {model.linear_relu_stack[0].bias} \n")
 
 ## 了解Flatten函数的运作原理
 input_image = torch.rand(3,28,28)
-print(input_image.size())
+# print(input_image.size())
 flatten = nn.Flatten()
 flat_image = flatten(input_image)
-print(flat_image.size())
+# print(flat_image.size())
 
 ## 了解Linear神经网络运作原理
 layer1 = nn.Linear(in_features=28*28, out_features=20)
 hidden1 = layer1(flat_image)
-print(hidden1.size())
+# print(hidden1.size())
 
 ## 了解ReLU函数
-print(f"Before ReLU: {hidden1}\n\n")
+# print(f"Before ReLU: {hidden1}\n\n")
 hidden1 = nn.ReLU()(hidden1)
-print(f"After ReLU: {hidden1}")
+# print(f"After ReLU: {hidden1}")
 
 ## 了解nn.squential()
 seq_modules = nn.Sequential(
@@ -152,10 +153,10 @@ softmax = nn.Softmax(dim=1)
 pred_probab = softmax(logits)
 
 ## 了解神经网络中参数基本遍历方式
-print("Model structure: ", model, "\n\n")
+# print("Model structure: ", model, "\n\n")
 
-for name, param in model.named_parameters():
-    print(f"Layer: {name} | Size: {param.size()} | Values : {param[:2]} \n")
+#　for name, param in model.named_parameters():
+#     print(f"Layer: {name} | Size: {param.size()} | Values : {param[:2]} \n")
 
 
 # torch.autograd 自动梯度下降
@@ -165,46 +166,46 @@ x = torch.ones(5)  # input tensor
 y = torch.zeros(3)  # expected output
 w = torch.randn(5, 3, requires_grad=True)
 b = torch.randn(3, requires_grad=True)
-print(w,b,'\n')
+# print(w,b,'\n')
 z = torch.matmul(x, w)+b
 loss = torch.nn.functional.binary_cross_entropy_with_logits(z, y)
 
-print('Gradient function for z =',z.grad_fn)
-print('Gradient function for loss =', loss.grad_fn)
+# print('Gradient function for z =',z.grad_fn)
+# print('Gradient function for loss =', loss.grad_fn)
 
 loss.backward()
-print(w.grad)
-print(b.grad)
+# print(w.grad)
+# print(b.grad)
 
 # 禁用梯度追踪
 z = torch.matmul(x, w)+b
-print(z.requires_grad)
+# print(z.requires_grad)
 
 with torch.no_grad():
     z = torch.matmul(x, w)+b
-print(z.requires_grad)
+# print(z.requires_grad)
 
 ## 通过 detach() 也可以起到相同的作用
 z = torch.matmul(x, w)+b
 z_det = z.detach()
 t = z_det
-print(z_det.requires_grad)
-print(t.requires_grad)
+# print(z_det.requires_grad)
+# print(t.requires_grad)
 
 inp = torch.eye(5, requires_grad=True)
 out = (inp+1).pow(2)
 out.backward(torch.ones_like(inp), retain_graph=True)
-print("First call\n", inp.grad)
+# print("First call\n", inp.grad)
 out.backward(torch.ones_like(inp), retain_graph=True)
-print("\nSecond call\n", inp.grad)
+# print("\nSecond call\n", inp.grad)
 inp.grad.zero_()
 out.backward(torch.ones_like(inp), retain_graph=True)
-print("\nCall after zeroing gradients\n", inp.grad)
+# print("\nCall after zeroing gradients\n", inp.grad)
 
 
 # 优化参数循环建立
 ## 设定超参
-learning_rate = 1e-3
+learning_rate = 0.0015
 batch_size = 64
 epochs = 5
 
@@ -252,3 +253,6 @@ for t in range(epochs):
     train_loop(train_dataloader, model, loss_fn, optimizer)
     test_loop(test_dataloader, model, loss_fn)
 print("Done!")
+
+torch.save(model.state_dict(), "parameters-config/model.pth")
+print("Saved PyTorch Model State to model.pth")
