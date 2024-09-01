@@ -1,4 +1,6 @@
-# Compute Visio
+All Chinese note release on https://blog.keboe.cn
+
+# Compute Vision
 
 This repository is restoring CV-lreanning recordings by target and stages.
 
@@ -29,4 +31,21 @@ This repository is restoring CV-lreanning recordings by target and stages.
 4. (waiting for update)
 
 ## Clothes Sorter
+
+Directory Interpretation:
+
+1. main.py: Early version code document, recording all python codes.
+2. data: storage training data and test data, classifiy by name tag.
+3. paramters-config: model paramters output directory.
+4. notebook: storage some note form kinds of sources.
+
+Model:
+
+input layer : $1\times 28\times 28 \rightarrow 512$
+
+hidden layer: $512\rightarrow 512$ 
+
+output layer: $512 \rightarrow 10$
+
+## MNIST
 
